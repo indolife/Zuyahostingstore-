@@ -1,366 +1,448 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Penjualan Hosting GTA SAMP & VPS Hosting</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Hosting & VPS Store with Slider</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-height: 600px;
+    padding: 10px;
+  }
+  #app {
+    background: #1e1e1e;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+    width: 100%;
+    max-width: 350px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 
-    * {
-      box-sizing: border-box;
-    }
+  h1, h2 {
+    font-weight: 700;
+    text-align: center;
+    color: #4fc3f7;
+    margin-bottom: 15px;
+  }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      background: #f5f7fa;
-      color: #333;
-      overflow-x: hidden;
-    }
+  .section-title {
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #81d4fa;
+    border-bottom: 2px solid #4fc3f7;
+    padding-bottom: 4px;
+    font-size: 1.3rem;
+  }
 
-    header {
-      background: #1e40af;
-      color: white;
-      text-align: center;
-      padding: 1rem 1rem 1rem 1rem;
-      font-weight: 600;
-      font-size: 1.5rem;
-      letter-spacing: 1.1px;
-    }
+  /* Slider container and styling */
+  .slider-container {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .slider::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
 
-    main {
-      padding: 1rem 1rem 5rem 1rem;
-      max-width: 600px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
+  /* Arrow buttons */
+  .arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #4fc3f7;
+    border: none;
+    color: #121212;
+    width: 30px;
+    height: 45px;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 24px;
+    user-select: none;
+  }
+  .arrow-btn:hover {
+    opacity: 1;
+  }
+  .arrow-left {
+    left: 0;
+  }
+  .arrow-right {
+    right: 0;
+  }
 
+  /* Product card */
+  .product-card {
+    min-width: 220px;
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    user-select: none;
+  }
+  .product-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #81d4fa;
+    margin-bottom: 6px;
+  }
+  .product-desc {
+    font-size: 0.95rem;
+    color: #b0b0b0;
+    margin-bottom: 10px;
+  }
+  .product-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #4fc3f7;
+    margin-bottom: 15px;
+  }
+  .order-button {
+    background: #4fc3f7;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #121212;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .order-button:hover,
+  .order-button:focus {
+    background: #039be5; ki
+    outline: none;
+  }
+
+  /* Form styles */
+  form {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+  }
+  label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  input[type="text"],
+  input[type="email"],
+  select {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    width: 100%;
+    background: #333;
+    color: #eee;
+    transition: background-color 0.3s ease;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  select:focus {
+    outline: none;
+    background: #444;
+  }
+  button[type="submit"] {
+    background: #4fc3f7;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #121212;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover:not(:disabled),
+  button[type="submit"]:focus:not(:disabled) {
+    background: #039be5;
+    outline: none;
+  }
+  button[type="submit"]:disabled {
+    background: #777;
+    cursor: not-allowed;
+  }
+
+  #confirmation {
+    color: #a5d6a7;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 400px) {
     .product-card {
-      background: white;
-      border-radius: 15px;
-      padding: 1.5rem;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-      color: #1e293b;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      min-width: 180px;
     }
-
-    .product-gta {
-      background: linear-gradient(135deg, #7f5af0, #2a2a72);
-      color: white;
-      box-shadow: 0 6px 15px rgba(127, 90, 240, 0.4);
+    #app {
+      padding: 15px 15px 20px 15px;
+      max-width: 350px;
     }
-
-    .product-card h2 {
-      font-weight: 700;
-      margin: 0;
+    .arrow-btn {
+      width: 26px;
+      height: 40px;
+      font-size: 20px;
     }
-
-    .product-gta h2 {
-      color: #FFD700;
-    }
-
-    .product-description {
-      font-size: 0.95rem;
-      line-height: 1.3;
-      opacity: 0.9;
-      margin: 0;
-    }
-
-    .menu-list-container {
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 0.3rem;
-      margin: 0 -1.5rem;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .menu-list-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    .menu-list {
-      display: flex;
-      gap: 1rem;
-      list-style: none;
-      padding-left: 1.5rem;
-      margin: 0;
-      min-width: max-content;
-      user-select: none;
-    }
-
-    .menu-list li {
-      background: rgba(255 255 255 / 0.15);
-      min-width: 140px;
-      border-radius: 12px;
-      padding: 1rem;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-weight: 600;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: background 0.3s, box-shadow 0.3s;
-      border: 1px solid transparent;
-    }
-
-    .product-gta .menu-list li {
-      background: rgba(255, 215, 0, 0.15);
-      color: #2a2a72;
-      border: 1px solid rgba(255, 215, 0, 0.4);
-    }
-
-    .menu-list li:hover,
-    .menu-list li:focus {
-      background: rgba(0, 0, 0, 0.15);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      outline: none;
-      border-color: #1e40af;
-      color: #1e40af;
-      font-weight: 700;
-    }
-
-    .menu-list li span.price {
-      margin-top: 0.4rem;
-      font-size: 1.25rem;
-      color: #1e40af;
-    }
-
-    .product-gta .menu-list li span.price {
-      color: #7f5af0;
-      font-weight: 700;
-    }
-
-    button.btn-buy {
-      cursor: pointer;
-      font-weight: 700;
-      border: none;
-      padding: 0.9rem 1.8rem;
-      border-radius: 40px;
-      font-size: 1rem;
-      transition: background 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      align-self: flex-start;
-    }
-
-    button.btn-buy-gta {
-      background: #FFD700;
-      color: #2a2a72;
-      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.7);
-    }
-    button.btn-buy-gta:hover {
-      background: #e6c200;
-    }
-
-    button.btn-buy-vps {
-      background: #3b82f6;
-      color: white;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.7);
-    }
-    button.btn-buy-vps:hover {
-      background: #2563eb;
-    }
-
-    /* Payment menu below */
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      max-width: 600px;
-      background: white;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      padding: 0.5rem 0;
-      z-index: 10;
-    }
-
-    footer .payment-option {
-      text-align: center;
-      flex: 1;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    footer .payment-option img {
-      max-height: 40px;
-      max-width: 70px;
-      object-fit: contain;
-      margin-bottom: 0.2rem;
-      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
-      transition: transform 0.3s ease;
-    }
-
-    footer .payment-option:hover img {
-      transform: scale(1.1);
-    }
-
-    footer .payment-option span {
-      display: block;
-      font-size: 0.75rem;
-      color: #64748b;
-    }
-
-    /* Responsive */
-    @media (max-width: 400px) {
-      main {
-        padding: 1rem 0 5rem 0;
-      }
-      .product-card {
-        padding: 1.2rem 1rem;
-      }
-      .menu-list li {
-        min-width: 120px;
-        padding: 0.8rem;
-        font-size: 0.9rem;
-      }
-      footer .payment-option img {
-        max-height: 36px;
-        max-width: 50px;
-      }
-      button.btn-buy {
-        width: 100%;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <header>
-    Penjualan Hosting GTA SAMP & VPS Hosting
-  </header>
-  <main>
-    <section class="product-card product-gta" aria-label="Penjualan Hosting GTA SAMP">
-      <h2>Hosting GTA SAMP</h2>
-      <p class="product-description">Hosting spesial & optimal untuk server GTA San Andreas Multiplayer (SA-MP)</p>
-      <div class="menu-list-container">
-        <ul class="menu-list" aria-label="Menu Paket Hosting GTA SAMP dan Harga">
-          <li tabindex="0" data-package="Basic 1 Bulan" data-price="Rp 50.000">
-            <span>Basic 1 Bulan</span>
-            <span class="price">Rp 50.000</span>
-          </li>
-          <li tabindex="0" data-package="Standard 3 Bulan" data-price="Rp 140.000">
-            <span>Standard 3 Bulan</span>
-            <span class="price">Rp 140.000</span>
-          </li>
-          <li tabindex="0" data-package="Premium 6 Bulan" data-price="Rp 250.000">
-            <span>Premium 6 Bulan</span>
-            <span class="price">Rp 250.000</span>
-          </li>
-          <li tabindex="0" data-package="Ultimate 12 Bulan" data-price="Rp 450.000">
-            <span>Ultimate 12 Bulan</span>
-            <span class="price">Rp 450.000</span>
-          </li>
-        </ul>
+  <div id="app" role="main" aria-label="Hosting dan VPS Store">
+    <h1>Store Hosting & VPS</h1>
+
+    <!-- Hosting Section -->
+    <div class="section-title">Produk Hosting</div>
+    <div class="slider-container" aria-label="Slider produk hosting">
+      <button class="arrow-btn arrow-left" aria-label="Geser kiri hosting" type="button">&#8249;</button>
+      <div class="slider" id="hostingSlider" tabindex="0" aria-roledescription="carousel" aria-live="polite" aria-atomic="true">
+        <div class="product-card" data-id="hosting-basic" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">Hosting Basic</div>
+          <div class="product-desc">65 GB Storage, 65 GB Bandwidth, 1 Domain</div>
+          <div class="product-price">Rp 15.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan Hosting Basic sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="hosting-standard" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">Hosting Standard</div>
+          <div class="product-desc">75 GB Storage, 75 GB Bandwidth, 1 Domain</div>
+          <div class="product-price">Rp 25.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan Hosting Standard sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="hosting-premium" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">Hosting Premium</div>
+          <div class="product-desc">85 GB Storage, 85 GB Bandwidth, Unlimited Domain</div>
+          <div class="product-price">Rp 35.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan Hosting Premium sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="hosting-business" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">Hosting Business</div>
+          <div class="product-desc">98 GB Storage, UNLIMITED GB Bandwidth, Unlimited Domain</div>
+          <div class="product-price">Rp 48.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan Hosting Business sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="hosting-enterprise" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">Hosting Enterprise</div>
+          <div class="product-desc">UNLIMITED Storage, Unlimited Bandwidth, Unlimited Domain</div>
+          <div class="product-price">Rp 60.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan Hosting Enterprise sekarang">Pesan Sekarang</button>
+        </div>
       </div>
-      <button class="btn-buy btn-buy-gta" type="button" onclick="redirectToWhatsApp('Hosting GTA SAMP')">
-        Beli Hosting GTA SAMP
-      </button>
-    </section>
+      <button class="arrow-btn arrow-right" aria-label="Geser kanan hosting" type="button">&#8250;</button>
+    </div>
 
-    <section class="product-card product-vps" aria-label="Penjualan VPS Hosting">
-      <h2>VPS Hosting</h2>
-      <p class="product-description">VPS serbaguna dengan kendali penuh dan performa terbaik untuk aplikasi Anda</p>
-      <div class="menu-list-container">
-        <ul class="menu-list" aria-label="Menu Paket VPS Hosting dan Harga">
-          <li tabindex="0" data-package="Entry 1 CPU / 2 GB RAM" data-price="Rp 150.000">
-            <span>Entry 1 CPU / 2 GB RAM</span>
-            <span class="price">Rp 150.000</span>
-          </li>
-          <li tabindex="0" data-package="Pro 2 CPU / 4 GB RAM" data-price="Rp 300.000">
-            <span>Pro 2 CPU / 4 GB RAM</span>
-            <span class="price">Rp 300.000</span>
-          </li>
-          <li tabindex="0" data-package="Business 4 CPU / 8 GB RAM" data-price="Rp 600.000">
-            <span>Business 4 CPU / 8 GB RAM</span>
-            <span class="price">Rp 600.000</span>
-          </li>
-          <li tabindex="0" data-package="Enterprise 8 CPU / 32 GB RAM" data-price="Rp 1.200.000">
-            <span>Enterprise 8 CPU / 32 GB RAM</span>
-            <span class="price">Rp 1.200.000</span>
-          </li>
-        </ul>
+    <!-- VPS Section -->
+    <div class="section-title">Produk VPS</div>
+    <div class="slider-container" aria-label="Slider produk VPS">
+      <button class="arrow-btn arrow-left" aria-label="Geser kiri VPS" type="button">&#8249;</button>
+      <div class="slider" id="vpsSlider" tabindex="0" aria-roledescription="carousel" aria-live="polite" aria-atomic="true">
+        <div class="product-card" data-id="vps-basic" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">VPS Basic</div>
+          <div class="product-desc">2 CPU, 2 GB RAM, 60 GB SSD</div>
+          <div class="product-price">Rp 30.000  / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan VPS Basic sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="vps-standard" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">VPS Standard</div>
+          <div class="product-desc">2 CPU, 4 GB RAM, 80 GB SSD</div>
+          <div class="product-price">Rp 45.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan VPS Standard sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="vps-premium" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">VPS Premium</div>
+          <div class="product-desc">4 CPU, 8 GB RAM, 160 GB SSD</div>
+          <div class="product-price">Rp 65.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan VPS Premium sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="vps-business" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">VPS Business</div>
+          <div class="product-desc">4 CPU, 16 GB RAM, 320 GB SSD</div>
+          <div class="product-price">Rp 100.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan VPS Business sekarang">Pesan Sekarang</button>
+        </div>
+        <div class="product-card" data-id="vps-enterprise" tabindex="0" aria-selected="false" role="group">
+          <div class="product-name">VPS Enterprise</div>
+          <div class="product-desc">8 ,CPU, 16 GB RAM, 640 GB SSD</div>
+          <div class="product-price">120.000 / bulan</div>
+          <button class="order-button" type="button" aria-label="Pesan VPS Enterprise sekarang">Pesan Sekarang</button>
+        </div>
       </div>
-      <button class="btn-buy btn-buy-vps" type="button" onclick="redirectToWhatsApp('VPS Hosting')">
-        Beli VPS Hosting
-      </button>
-    </section>
-  </main>
-
-  <footer aria-label="Menu Pembayaran">
-    <div class="payment-option" tabindex="0" role="button" aria-pressed="false" onclick="alert('Pembayaran via OVO')">
-      <img src="https://cdn-icons-png.flaticon.com/512/1191/1191536.png" alt="Logo OVO" />
-      <span>OVO</span>
+      <button class="arrow-btn arrow-right" aria-label="Geser kanan VPS" type="button">&#8250;</button>
     </div>
-    <div class="payment-option" tabindex="0" role="button" aria-pressed="false" onclick="alert('Pembayaran via QRIS')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/QR_Code_Logo.svg" alt="Logo QRIS" />
-      <span>QRIS</span>
-    </div>
-    <div class="payment-option" tabindex="0" role="button" aria-pressed="false" onclick="alert('Pembayaran via Dana')">
-      <img src="https://seeklogo.com/images/D/dana-logo-729EDAF2B2-seeklogo.com.png" alt="Logo Dana" />
-      <span>Dana</span>
-    </div>
-    <div class="payment-option" tabindex="0" role="button" aria-pressed="false" onclick="alert('Pembayaran via GoPay')">
-      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968375.png" alt="Logo GoPay" />
-      <span>GoPay</span>
-    </div>
-  </footer>
 
-  <script>
-    function redirectToWhatsApp(productCategory) {
-      const phoneNumber = '6283104981176';
+    <!-- Order form -->
+    <form id="orderForm" aria-label="Formulir pengisian pembelian" novalidate>
+      <h2>Isi Detail Pembelian</h2>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" placeholder="Masukkan username" required minlength="3" maxlength="20" />
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" autocomplete="email" placeholder="Masukkan email" required />
+      <label for="payment">Metode Pembayaran</label>
+      <select id="payment" name="payment" required>
+        <option value="" disabled selected>Pilih metode pembayaran</option>
+        <option value="Transfer Bank">Transfer Bank</option>
+        <option value="OVO">OVO</option>
+        <option value="GoPay">GoPay</option>
+        <option value="DANA">DANA</option>
+        <option value="COD">COD (Cash on Delivery)</option>
+      </select>
+      <button type="submit" id="submitBtn" disabled>Pesan Sekarang</button>
+    </form>
 
-      // Find selected package and price in the product section
-      const productSection = document.querySelector('.product-card.' + (productCategory.toLowerCase().includes('gta') ? 'product-gta' : 'product-vps'));
-      const selectedPackageLi = productSection.querySelector('.menu-list li.selected') || productSection.querySelector('.menu-list li');
+    <div id="confirmation" role="alert" aria-live="polite"></div>
+  </div>
 
-      // For usability, user has not selected a package, so pick first will do
+<script>
+  const hostingSlider = document.getElementById('hostingSlider');
+  const vpsSlider = document.getElementById('vpsSlider');
+  const orderForm = document.getElementById('orderForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const confirmationEl = document.getElementById('confirmation');
+  const hostingSliderContainer = hostingSlider.parentElement;
+  const vpsSliderContainer = vpsSlider.parentElement;
 
-      // Or optionally we can prompt user to click a package to select, but since not interactive required let's pick first item if none selected
+  let selectedProductId = null;
 
-      let packageName = '';
-      let packagePrice = '';
+  // Arrows functionality
+  function setupSliderArrows(sliderContainer, slider) {
+    const leftArrow = sliderContainer.querySelector('.arrow-left');
+    const rightArrow = sliderContainer.querySelector('.arrow-right');
+    const scrollAmount = 240;
 
-      if (selectedPackageLi) {
-        packageName = selectedPackageLi.getAttribute('data-package') || (selectedPackageLi.querySelector('span') ? selectedPackageLi.querySelector('span').textContent : '');
-        packagePrice = selectedPackageLi.getAttribute('data-price') || (selectedPackageLi.querySelector('.price') ? selectedPackageLi.querySelector('.price').textContent : '');
-      }
-
-      // Compose WhatsApp message template asking user to fill details
-      // Message includes chosen product category + package name + package price,
-      // then asks user to provide username, Dana number and email in WhatsApp chat
-      const message = 
-        encodeURIComponent(
-          `Halo, saya ingin memesan produk: *${productCategory}*\n` +
-          `Paket yang dipilih: *${packageName}* (${packagePrice})\n\n` +
-          `Mohon informasikan data berikut:\n` +
-          `- Username:\n` +
-          `- Nomor Dana:\n` +
-          `- Email:`
-        );
-      const waUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-
-      // Redirect user to WhatsApp chat with the message
-      window.location.href = waUrl;
-    }
-
-    // Optional: let user select package by clicking a package list item
-    document.querySelectorAll('.menu-list li').forEach(li => {
-      li.addEventListener('click', () => {
-        const siblings = li.parentNode.querySelectorAll('li');
-        siblings.forEach(sib => sib.classList.remove('selected'));
-        li.classList.add('selected');
-      });
+    leftArrow.addEventListener('click', () => {
+      slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     });
-  </script>
-</body>
-</html>
+    rightArrow.addEventListener('click', () => {
+      slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  }
 
+  setupSliderArrows(hostingSliderContainer, hostingSlider);
+  setupSliderArrows(vpsSliderContainer, vpsSlider);
+
+  // Enable submit button only if form valid
+  function checkFormValidity() {
+    submitBtn.disabled = !orderForm.checkValidity();
+  }
+
+  // Handle Pesan Sekarang clicks inside sliders
+  function setupOrderButtons(slider) {
+    slider.addEventListener('click', e => {
+      if (e.target.classList.contains('order-button')) {
+        const card = e.target.closest('.product-card');
+        if (!card) return;
+        selectProduct(card);
+      }
+    });
+    // Keyboard support: enter or space triggers click
+    slider.addEventListener('keydown', e => {
+      if (e.target.classList.contains('order-button') && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        e.target.click();
+      }
+    });
+  }
+
+  setupOrderButtons(hostingSlider);
+  setupOrderButtons(vpsSlider);
+
+  function selectProduct(card) {
+    selectedProductId = card.getAttribute('data-id');
+    // Update aria-selected for all cards
+    [hostingSlider, vpsSlider].forEach(slider => {
+      slider.querySelectorAll('.product-card').forEach(c => c.setAttribute('aria-selected', 'false'));
+    });
+    card.setAttribute('aria-selected', 'true');
+
+    // Hide sliders and section titles
+    document.querySelectorAll('.slider-container, .section-title').forEach(el => el.style.display = 'none');
+
+    // Show form
+    orderForm.style.display = 'flex';
+
+    // Focus username input
+    document.getElementById('username').focus();
+
+    // Clear confirmation and reset form
+    confirmationEl.textContent = '';
+    orderForm.reset();
+    submitBtn.disabled = true;
+  }
+
+  orderForm.addEventListener('input', checkFormValidity);
+
+  orderForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!orderForm.checkValidity()) return;
+
+    const username = orderForm.username.value.trim();
+    const email = orderForm.email.value.trim();
+    const payment = orderForm.payment.value;
+
+    // Find selected product info from all product cards
+    let product = null;
+    const allCards = [...hostingSlider.children, ...vpsSlider.children];
+    for (const c of allCards) {
+      if (c.getAttribute('data-id') === selectedProductId) {
+        product = {
+          name: c.querySelector('.product-name').textContent,
+          desc: c.querySelector('.product-desc').textContent,
+          price: c.querySelector('.product-price').textContent
+        };
+        break;
+      }
+    }
+    if (!product) return;
+
+    const message =
+      `Pesanan:%0A` +
+      `Produk: ${product.name}%0A` +
+      `Deskripsi: ${product.desc}%0A` +
+      `Harga: ${product.price}%0A` +
+      `Username: ${username}%0A` +
+      `Email: ${email}%0A` +
+      `Metode Pembayaran: ${payment}`;
+
+    const waNumber = '6289668059470';
+    const waURL = `https://wa.me/${waNumber}?text=${message}`;
+
+    confirmationEl.textContent = "Mengarahkan ke WhatsApp...";
+    submitBtn.disabled = true;
+
+    window.open(waURL, '_blank');
+  });
+</script>
+</body>
+  </html>
